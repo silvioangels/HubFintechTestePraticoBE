@@ -2,6 +2,7 @@ package com.hubfintech.app;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.hubfintech.app.entities.Conta;
+import com.hubfintech.app.entities.Historico;
+import com.hubfintech.app.entities.Pessoa;
 import com.hubfintech.app.enums.SituacaoConta;
 import com.hubfintech.app.enums.TipoConta;
+import com.hubfintech.app.enums.TipoPessoa;
+import com.hubfintech.app.enums.TipoTransacao;
 import com.hubfintech.app.repositories.ContaRepository;
 import com.hubfintech.app.repositories.HistoricoRepository;
 import com.hubfintech.app.repositories.PessoaRepository;
@@ -40,6 +45,7 @@ public class App {
 			System.out.println("### INICIO");
 			System.out.println("###############################################################");
 			
+			System.out.println("### POPULANDO TABELA CONTA");
 			Conta conta = new Conta();
 			conta.setNome("Teste 1");
 			conta.setSaldo(new BigDecimal(1000));
@@ -87,25 +93,40 @@ public class App {
 			List<Conta> contas = contaRepository.findAll();
 			contas.forEach(System.out::println);
 			
-			/*Pessoa pessoa = new Pessoa();
+			System.out.println("### POPULANDO TABELA PESSOA");
+			
+			Conta conta6 = new Conta();
+			conta6.setNome("Teste 6");
+			conta6.setSaldo(new BigDecimal(1000));
+			conta6.setSituacao(SituacaoConta.ATIVA);
+			conta6.setTipoConta(TipoConta.MATRIZ);
+			
+			Pessoa pessoa = new Pessoa();
 			pessoa.setNome("Teste");
 			pessoa.setNumeroCpfCnpj("12905142839");
 			pessoa.setDataNascimento(new Date());
 			pessoa.setTipoPessoa(TipoPessoa.FISICA);
-			pessoa.setConta(conta);
+			pessoa.setConta(conta6);
 			pessoaRepository.save(pessoa);
 			
 			List<Pessoa> pessoas = pessoaRepository.findAll();
-			pessoas.forEach(System.out::println);*/
+			pessoas.forEach(System.out::println);
 			
-			/*Historico historico = new Historico();
-			historico.setContaDestino(conta);
-			historico.setTipoTransferencia(TipoTransferencia.TRANSFERENCIA);
+			Conta conta7 = new Conta();
+			conta7.setNome("Teste 6");
+			conta7.setSaldo(new BigDecimal(1000));
+			conta7.setSituacao(SituacaoConta.ATIVA);
+			conta7.setTipoConta(TipoConta.MATRIZ);
+			
+			System.out.println("### POPULANDO TABELA HISTORICO");
+			Historico historico = new Historico();
+			historico.setContaDestino(conta7);
+			historico.setTipoTransferencia(TipoTransacao.TRANFERENCIA);
 			historico.setValor(new BigDecimal(1000));
 			historicoRepository.save(historico);
 			
 			List<Historico> historicos = historicoRepository.findAll();
-			historicos.forEach(System.out::println);*/
+			historicos.forEach(System.out::println);
 			
 			System.out.println("###############################################################");
 			System.out.println("### FIM");

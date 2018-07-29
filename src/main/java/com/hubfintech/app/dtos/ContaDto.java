@@ -1,6 +1,7 @@
 package com.hubfintech.app.dtos;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -12,15 +13,17 @@ import com.hubfintech.app.entities.Conta;
 
 @SuppressWarnings("deprecation")
 public class ContaDto {
-	
+
 	private Long id;
 	private String nome;
 	private int idPai;
 	private String tipoConta;
+	private Date dataCriacao;
 	private BigDecimal saldo;
 	private String situacao;
+
 	private List<Conta> contas;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -47,7 +50,7 @@ public class ContaDto {
 	public void setIdPai(int idPai) {
 		this.idPai = idPai;
 	}
-	
+
 	@NotEmpty(message = "Tipo Conta não pode ser vazia.")
 	@NotNull(message = "Tipo Conta não pode ser nula.")
 	public String getTipoConta() {
@@ -62,7 +65,7 @@ public class ContaDto {
 	public BigDecimal getSaldo() {
 		return saldo;
 	}
-	
+
 	public void setSaldo(BigDecimal saldo) {
 		this.saldo = saldo;
 	}
@@ -81,6 +84,14 @@ public class ContaDto {
 
 	public void setContas(List<Conta> contas) {
 		this.contas = contas;
+	}
+
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
 
 }

@@ -20,7 +20,7 @@ public class ContaServiceImpl implements ContaService{
 	private ContaRepository repository;
 	
 	@Override
-	public List<ContaDto> cadastrarOuAtualizar(ContaDto contaDto) {
+	public ContaDto cadastrarOuAtualizar(ContaDto contaDto) {
 		
 		Conta entity = new Conta();
 		
@@ -47,9 +47,10 @@ public class ContaServiceImpl implements ContaService{
 			contaDto.setIdPai(conta.getIdPai());
 			contaDto.setNome(conta.getNome());
 			contaDto.setSaldo(conta.getSaldo());
-			contaDto.setSituacao(conta.getSituacao().name());
-			contaDto.setTipoConta(conta.getTipoConta().name());
+			contaDto.setSituacao(conta.getSituacao().getCodigo());
+			contaDto.setTipoConta(conta.getTipoConta().getCodigo());
 			contaDto.setContas(conta.getContas());
+			contaDto.setDataCriacao(conta.getDataCriacao());
 			
 			listaConta.add(contaDto);
 		}
@@ -58,8 +59,7 @@ public class ContaServiceImpl implements ContaService{
 	}
 
 	@Override
-	public List<ContaDto> recuperarPeloId(Long id) {
-		List<ContaDto> listaConta = new ArrayList<ContaDto>();
+	public ContaDto recuperarPeloId(Long id) {
 		
 		ContaDto contaDto = new ContaDto();
 		
@@ -69,13 +69,11 @@ public class ContaServiceImpl implements ContaService{
 		contaDto.setIdPai(conta.getIdPai());
 		contaDto.setNome(conta.getNome());
 		contaDto.setSaldo(conta.getSaldo());
-		contaDto.setSituacao(conta.getSituacao().name());
-		contaDto.setTipoConta(conta.getTipoConta().name());
+		contaDto.setSituacao(conta.getSituacao().getCodigo());
+		contaDto.setTipoConta(conta.getTipoConta().getCodigo());
 		contaDto.setContas(conta.getContas());
 		
-		listaConta.add(contaDto);
-		
-		return listaConta;
+		return contaDto;
 	}
 
 	@Override

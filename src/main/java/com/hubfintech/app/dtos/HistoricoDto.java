@@ -1,6 +1,7 @@
 package com.hubfintech.app.dtos;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,6 +16,7 @@ public class HistoricoDto {
 	private Conta contaDestino;
 	private BigDecimal valor;
 	private String tipoTransferencia;
+	private Date dataCriacao;
 
 	public Conta getContaOrigem() {
 		return contaOrigem;
@@ -51,5 +53,15 @@ public class HistoricoDto {
 	public void setTipoTransferencia(String tipoTransferencia) {
 		this.tipoTransferencia = tipoTransferencia;
 	}
+
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+	
+	
 
 }
