@@ -45,7 +45,7 @@ public class HistoricoServiceImpl implements HistoricoService{
 			historicoDto.setContaOrigem(historico.getContaOrigem());
 			historicoDto.setContaDestino(historico.getContaDestino());
 			historicoDto.setValor(historico.getValor());
-			historicoDto.setTipoTransferencia(historico.getTipoTransferencia().getCodigo());
+			historicoDto.setTipoTransferencia(historico.getTipoTransferencia().name());
 			
 			listaHistorico.add(historicoDto);
 		}
@@ -64,7 +64,7 @@ public class HistoricoServiceImpl implements HistoricoService{
 		historicoDto.setContaOrigem(entity.getContaOrigem());
 		historicoDto.setContaDestino(entity.getContaDestino());
 		historicoDto.setValor(entity.getValor());
-		historicoDto.setTipoTransferencia(entity.getTipoTransferencia().getCodigo());
+		historicoDto.setTipoTransferencia(entity.getTipoTransferencia().name());
 		
 		return historicoDto;
 	}

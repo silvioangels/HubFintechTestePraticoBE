@@ -47,8 +47,8 @@ public class ContaServiceImpl implements ContaService{
 			contaDto.setIdPai(conta.getIdPai());
 			contaDto.setNome(conta.getNome());
 			contaDto.setSaldo(conta.getSaldo());
-			contaDto.setSituacao(conta.getSituacao().getCodigo());
-			contaDto.setTipoConta(conta.getTipoConta().getCodigo());
+			contaDto.setSituacao(conta.getSituacao().name());
+			contaDto.setTipoConta(conta.getTipoConta().name());
 			contaDto.setContas(conta.getContas());
 			contaDto.setDataCriacao(conta.getDataCriacao());
 			
@@ -69,8 +69,8 @@ public class ContaServiceImpl implements ContaService{
 		contaDto.setIdPai(conta.getIdPai());
 		contaDto.setNome(conta.getNome());
 		contaDto.setSaldo(conta.getSaldo());
-		contaDto.setSituacao(conta.getSituacao().getCodigo());
-		contaDto.setTipoConta(conta.getTipoConta().getCodigo());
+		contaDto.setSituacao(conta.getSituacao().name());
+		contaDto.setTipoConta(conta.getTipoConta().name());
 		contaDto.setContas(conta.getContas());
 		
 		return contaDto;
