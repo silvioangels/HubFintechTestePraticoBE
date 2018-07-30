@@ -2,7 +2,7 @@ package com.hubfintech.app.enums;
 
 public enum TipoTransacao {
 
-	TRANSACAO_INVALIDA, CADASTRAR, ALTERAR, EXCLUIR, APORTE, TRANFERENCIA;
+	TRANSACAO_INVALIDA, APORTE, TRANFERENCIA;
 
 	public static TipoTransacao recuperarEnum(String codigo) {
 
