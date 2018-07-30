@@ -10,7 +10,7 @@ public enum SituacaoConta {
 		
 		for (SituacaoConta registro : values()) {
 			
-			if (registro.equals(codigo.trim())) {
+			if (registro.name().equals(codigo.trim())) {
 				return registro;
 			}
 			
