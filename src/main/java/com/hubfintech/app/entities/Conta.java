@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -23,10 +24,10 @@ import com.hubfintech.app.enums.TipoConta;
 
 @Entity
 @Table(name = "conta")
-public class Conta implements Serializable{
-	
+public class Conta implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private String nome;
 	private int idPai;
@@ -34,18 +35,20 @@ public class Conta implements Serializable{
 	private BigDecimal saldo;
 	private SituacaoConta situacao;
 	private Date dataCriacao;
+	private Pessoa pessoa;
 	private List<Conta> contas;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	@Column(name = "nome", nullable = true)
 	public String getNome() {
 		return nome;
@@ -63,7 +66,7 @@ public class Conta implements Serializable{
 	public void setIdPai(int idPai) {
 		this.idPai = idPai;
 	}
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_conta", nullable = true)
 	public TipoConta getTipoConta() {
@@ -73,7 +76,7 @@ public class Conta implements Serializable{
 	public void setTipoConta(TipoConta tipoConta) {
 		this.tipoConta = tipoConta;
 	}
-	
+
 	@Column(name = "saldo", nullable = true)
 	public BigDecimal getSaldo() {
 		return saldo;
@@ -82,7 +85,7 @@ public class Conta implements Serializable{
 	public void setSaldo(BigDecimal saldo) {
 		this.saldo = saldo;
 	}
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "situacao", nullable = true)
 	public SituacaoConta getSituacao() {
@@ -92,7 +95,7 @@ public class Conta implements Serializable{
 	public void setSituacao(SituacaoConta situacao) {
 		this.situacao = situacao;
 	}
-	
+
 	@Column(name = "data_criacao", nullable = true)
 	public Date getDataCriacao() {
 		return dataCriacao;
@@ -101,8 +104,17 @@ public class Conta implements Serializable{
 	void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
-	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+	@OneToOne(cascade = CascadeType.ALL, optional = true)
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	public List<Conta> getContas() {
 		return contas;
 	}
@@ -119,7 +131,8 @@ public class Conta implements Serializable{
 	@Override
 	public String toString() {
 		return "Conta [id=" + id + ", nome=" + nome + ", idPai=" + idPai + ", tipoConta=" + tipoConta + ", saldo="
-				+ saldo + ", situacao=" + situacao + ", dataCriacao=" + dataCriacao + ", contas=" + contas + "]";
+				+ saldo + ", situacao=" + situacao + ", dataCriacao=" + dataCriacao + ", pessoa=" + pessoa + ", contas="
+				+ contas + "]";
 	}
 
 }

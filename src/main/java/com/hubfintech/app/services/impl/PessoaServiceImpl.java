@@ -24,7 +24,6 @@ public class PessoaServiceImpl implements PessoaService{
 		Pessoa entity = new Pessoa();
 		
 		entity.setNome(contaDto.getNome());
-		entity.setConta(contaDto.getConta());
 		entity.setDataNascimento(contaDto.getDataNascimento());
 		entity.setNumeroCpfCnpj(contaDto.getNumeroCpfCnpj());
 		entity.setRazaoSocial(contaDto.getRazaoSocial());
@@ -35,7 +34,7 @@ public class PessoaServiceImpl implements PessoaService{
 	}
 
 	@Override
-	public List<PessoaDto> recuperarTodos() {
+	public List<PessoaDto> consultarTodos() {
 		List<PessoaDto> listaPessoa = new ArrayList<PessoaDto>();
 		
 		for (Pessoa pessoa : repository.findAll()) {
@@ -47,7 +46,6 @@ public class PessoaServiceImpl implements PessoaService{
 			pessoaDto.setNumeroCpfCnpj(pessoa.getNumeroCpfCnpj());
 			pessoaDto.setRazaoSocial(pessoa.getRazaoSocial());
 			pessoaDto.setTipoPessoa(pessoa.getTipoPessoa().name());
-			pessoaDto.setConta(pessoa.getConta());
 			
 			listaPessoa.add(pessoaDto);
 		}
@@ -56,7 +54,7 @@ public class PessoaServiceImpl implements PessoaService{
 	}
 
 	@Override
-	public PessoaDto recuperarPeloId(Long id) {
+	public PessoaDto consultarPeloId(Long id) {
 		
 		PessoaDto pessoaDto = new PessoaDto();
 		
@@ -68,7 +66,6 @@ public class PessoaServiceImpl implements PessoaService{
 		pessoaDto.setNumeroCpfCnpj(pessoa.getNumeroCpfCnpj());
 		pessoaDto.setRazaoSocial(pessoa.getRazaoSocial());
 		pessoaDto.setTipoPessoa(pessoa.getTipoPessoa().name());
-		pessoaDto.setConta(pessoa.getConta());
 		
 		return pessoaDto;
 	}

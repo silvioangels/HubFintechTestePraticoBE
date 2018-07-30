@@ -30,12 +30,12 @@ public class HistoricoServiceImpl implements HistoricoService{
 		
 		repository.save(entity);
 		
-		return recuperarPeloId(entity.getId());
+		return consultarPeloId(entity.getId());
 		
 	}
 
 	@Override
-	public List<HistoricoDto> recuperarTodos() {
+	public List<HistoricoDto> consultarTodos() {
 		
 		List<HistoricoDto> listaHistorico = new ArrayList<HistoricoDto>();
 		
@@ -55,7 +55,7 @@ public class HistoricoServiceImpl implements HistoricoService{
 	}
 	
 	@Override
-	public HistoricoDto recuperarPeloId(Long id) {
+	public HistoricoDto consultarPeloId(Long id) {
 		
 		HistoricoDto historicoDto = new HistoricoDto();
 		

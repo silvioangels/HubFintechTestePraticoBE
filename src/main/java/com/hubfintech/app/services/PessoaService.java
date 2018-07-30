@@ -7,8 +7,8 @@ import com.hubfintech.app.dtos.PessoaDto;
 public interface PessoaService {
 
 	public void cadastrarOuAtualizar(PessoaDto contaDto);
-	public List<PessoaDto> recuperarTodos();
-	public PessoaDto recuperarPeloId(Long id);
+	public List<PessoaDto> consultarTodos();
+	public PessoaDto consultarPeloId(Long id);
 	public void deletar(Long id);
 	
 }

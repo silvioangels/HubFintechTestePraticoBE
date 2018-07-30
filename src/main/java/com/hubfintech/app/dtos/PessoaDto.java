@@ -7,8 +7,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.hubfintech.app.entities.Conta;
-
 @SuppressWarnings("deprecation")
 public class PessoaDto {
 	
@@ -18,7 +16,6 @@ public class PessoaDto {
 	private String razaoSocial;
 	private Date dataNascimento;
 	private String tipoPessoa;
-	private Conta conta;
 
 	public Long getId() {
 		return id;
@@ -74,12 +71,5 @@ public class PessoaDto {
 		this.tipoPessoa = tipoPessoa;
 	}
 
-	public Conta getConta() {
-		return conta;
-	}
-
-	public void setConta(Conta conta) {
-		this.conta = conta;
-	}
 
 }

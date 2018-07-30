@@ -21,8 +21,8 @@ public class ContaDto {
 	private Date dataCriacao;
 	private BigDecimal saldo;
 	private String situacao;
-
 	private List<Conta> contas;
+	private PessoaDto pessoa;
 
 	public Long getId() {
 		return id;
@@ -92,6 +92,14 @@ public class ContaDto {
 
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
+	}
+
+	public PessoaDto getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(PessoaDto pessoa) {
+		this.pessoa = pessoa;
 	}
 
 }
