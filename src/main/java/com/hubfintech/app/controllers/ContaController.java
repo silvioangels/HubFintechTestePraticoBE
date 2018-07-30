@@ -88,7 +88,8 @@ public class ContaController {
 				return ResponseEntity.badRequest().body(response);
 			}
 			
-			response.setData(Arrays.asList(contaService.cadastrarOuAtualizar(contaDto)));
+			Long id = contaService.cadastrarOuAtualizar(contaDto);
+			response.setData(Arrays.asList(contaService.consultarPeloId(id)));
 			
 		} catch (Exception e) {
 			response.getErrors().add(e.getMessage());
@@ -112,7 +113,8 @@ public class ContaController {
 				return ResponseEntity.badRequest().body(response);
 			}
 			
-			response.setData(Arrays.asList(contaService.cadastrarOuAtualizar(contaDto)));
+			Long id = contaService.cadastrarOuAtualizar(contaDto);
+			response.setData(Arrays.asList(contaService.consultarPeloId(id)));
 			
 		} catch (NoSuchElementException e) {
 			response.getErrors().add("Registro não encontrado.");
@@ -171,7 +173,8 @@ public class ContaController {
 			contaService.realizarTransferencia(historicoDto);
 			
 			//chama o servico que grava o historico
-			response.setData(Arrays.asList(historicoService.cadastrarOuAtualizar(historicoDto)));
+			Long id = historicoService.cadastrarOuAtualizar(historicoDto);
+			response.setData(Arrays.asList(historicoService.consultarPeloId(id)));
 			
 		} catch (RegraNegocioException e) {
 			response.getErrors().add("Regra de Negocio: " +e.getMessage());

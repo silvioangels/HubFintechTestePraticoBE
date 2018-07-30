@@ -8,7 +8,7 @@ import com.hubfintech.app.exception.RegraNegocioException;
 
 public interface ContaService {
 	
-	public ContaDto cadastrarOuAtualizar(ContaDto contaDto);
+	public Long cadastrarOuAtualizar(ContaDto contaDto);
 	public List<ContaDto> consultarTodos();
 	public ContaDto consultarPeloId(Long id);
 	public void deletar(Long id);

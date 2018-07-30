@@ -19,18 +19,21 @@ public class HistoricoServiceImpl implements HistoricoService{
 	private HistoricoRepository repository;
 
 	@Override
-	public HistoricoDto cadastrarOuAtualizar(HistoricoDto historicoDto) {
+	public Long cadastrarOuAtualizar(HistoricoDto historicoDto) {
 		
 		Historico entity = new Historico();
 		
-		entity.setContaOrigem(historicoDto.getContaOrigem());
-		entity.setContaDestino(historicoDto.getContaDestino());
 		entity.setValor(historicoDto.getValor());
 		entity.setTipoTransferencia(TipoTransacao.recuperarEnum(historicoDto.getTipoTransferencia()));
 		
 		repository.save(entity);
 		
-		return consultarPeloId(entity.getId());
+		entity.setContaOrigem(historicoDto.getContaOrigem());
+		entity.setContaDestino(historicoDto.getContaDestino());
+		
+		repository.save(entity);
+		
+		return entity.getId();
 		
 	}
 
@@ -42,10 +45,12 @@ public class HistoricoServiceImpl implements HistoricoService{
 		for (Historico historico : repository.findAll()) {
 			HistoricoDto historicoDto = new HistoricoDto(); 
 			
+			historicoDto.setId(historico.getId());
 			historicoDto.setContaOrigem(historico.getContaOrigem());
 			historicoDto.setContaDestino(historico.getContaDestino());
 			historicoDto.setValor(historico.getValor());
 			historicoDto.setTipoTransferencia(historico.getTipoTransferencia().name());
+			historicoDto.setDataCriacao(historico.getDataCriacao());
 			
 			listaHistorico.add(historicoDto);
 		}
@@ -61,10 +66,12 @@ public class HistoricoServiceImpl implements HistoricoService{
 		
 		Historico entity = repository.findById(id).get();
 		
+		historicoDto.setId(entity.getId());
 		historicoDto.setContaOrigem(entity.getContaOrigem());
 		historicoDto.setContaDestino(entity.getContaDestino());
 		historicoDto.setValor(entity.getValor());
 		historicoDto.setTipoTransferencia(entity.getTipoTransferencia().name());
+		historicoDto.setDataCriacao(entity.getDataCriacao());
 		
 		return historicoDto;
 	}

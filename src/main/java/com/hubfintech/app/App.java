@@ -99,15 +99,14 @@ public class App {
 			List<Conta> contas = contaRepository.findAll();
 			contas.forEach(System.out::println);
 			
-			
 			List<Pessoa> pessoas = pessoaRepository.findAll();
 			pessoas.forEach(System.out::println);
 			
 			Conta conta6 = new Conta();
-			conta5.setNome("Teste 5");
-			conta5.setSaldo(new BigDecimal(1000));
-			conta5.setSituacao(SituacaoConta.ATIVA);
-			conta5.setTipoConta(TipoConta.MATRIZ);
+			conta6.setNome("Teste 6");
+			conta6.setSaldo(new BigDecimal(1000));
+			conta6.setSituacao(SituacaoConta.ATIVA);
+			conta6.setTipoConta(TipoConta.MATRIZ);
 			
 			Historico historico = new Historico();
 			historico.setContaDestino(conta6);

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -40,7 +41,8 @@ public class Historico implements Serializable {
 		this.id = id;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL, optional = true)
+	@OneToOne (cascade=CascadeType.ALL, optional=true)
+	@JoinColumn(name="id_conta_origem")
 	public Conta getContaOrigem() {
 		return contaOrigem;
 	}
@@ -49,7 +51,8 @@ public class Historico implements Serializable {
 		this.contaOrigem = contaOrigem;
 	}
 	
-	@OneToOne(cascade = CascadeType.ALL, optional = false)
+	@OneToOne (cascade=CascadeType.ALL, optional=true)
+	@JoinColumn(name="id_conta_destino")
 	public Conta getContaDestino() {
 		return contaDestino;
 	}

@@ -12,11 +12,20 @@ import com.hubfintech.app.entities.Conta;
 @SuppressWarnings("deprecation")
 public class HistoricoDto {
 
+	private Long id;
 	private Conta contaOrigem;
 	private Conta contaDestino;
 	private BigDecimal valor;
 	private String tipoTransferencia;
 	private Date dataCriacao;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Conta getContaOrigem() {
 		return contaOrigem;
@@ -25,7 +34,7 @@ public class HistoricoDto {
 	public void setContaOrigem(Conta contaOrigem) {
 		this.contaOrigem = contaOrigem;
 	}
-	
+
 	@NotNull(message = "Conta de Destino não pode ser vazia.")
 	public Conta getContaDestino() {
 		return contaDestino;
@@ -34,7 +43,7 @@ public class HistoricoDto {
 	public void setContaDestino(Conta contaDestino) {
 		this.contaDestino = contaDestino;
 	}
-	
+
 	@NotNull(message = "Valor deve ser preenchido")
 	public BigDecimal getValor() {
 		return valor;
@@ -43,7 +52,7 @@ public class HistoricoDto {
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
-	
+
 	@NotEmpty(message = "Tipo Transferencia não pode ser vazia.")
 	@NotNull(message = "Tipo Transferencia não pode ser nula.")
 	public String getTipoTransferencia() {
@@ -61,7 +70,5 @@ public class HistoricoDto {
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
-	
-	
 
 }

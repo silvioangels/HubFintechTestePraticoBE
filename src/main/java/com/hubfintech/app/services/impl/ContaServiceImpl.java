@@ -24,7 +24,7 @@ public class ContaServiceImpl implements ContaService{
 	private ContaRepository repository;
 	
 	@Override
-	public ContaDto cadastrarOuAtualizar(ContaDto contaDto) {
+	public Long cadastrarOuAtualizar(ContaDto contaDto) {
 		
 		Conta entity = new Conta();
 		
@@ -37,7 +37,7 @@ public class ContaServiceImpl implements ContaService{
 		
 		repository.save(entity);
 		
-		return consultarPeloId(entity.getId());
+		return entity.getId();
 	}
 
 	@Override
@@ -154,6 +154,10 @@ public class ContaServiceImpl implements ContaService{
 					throw new RegraNegocioException("Conta de Origem não pode ser vazia");
 				}
 				
+				if(contaDestino.getTipoConta() == TipoConta.MATRIZ) {
+					throw new RegraNegocioException("Não é permitido realizar transferencia para Conta Matriz");
+				}
+				
 				if(contaOrigem.getId() != contaDestino.getIdPai()) {
 					throw new RegraNegocioException("Não é permitido realizar transferencia de uma conta Filial que não pertença a Conta Matriz correspondente");
 				}
@@ -161,10 +165,6 @@ public class ContaServiceImpl implements ContaService{
 				if(contaOrigem.getSituacao() == SituacaoConta.BLOQUEADA || 
 						contaOrigem.getSituacao() == SituacaoConta.CANCELADA) {
 					throw new RegraNegocioException("Não é permitido realizar transferencia devido a conta de origem estar Bloqueada e/ou Cancelada");
-				}
-				
-				if(contaDestino.getTipoConta() == TipoConta.MATRIZ) {
-					throw new RegraNegocioException("Não é permitido realizar transferencia para Conta Matriz");
 				}
 				
 				break;
