@@ -33,5 +33,5 @@ public class ConfigurationsTest {
         RestAssured.baseURI = baseHost;
 
     }
-
+	
 }

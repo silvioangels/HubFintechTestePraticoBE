@@ -111,7 +111,8 @@ public class ContaDto {
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
-
+	
+	@NotNull(message = "Conta deve ter uma pessoa.")
 	public PessoaDto getPessoa() {
 		return pessoa;
 	}
