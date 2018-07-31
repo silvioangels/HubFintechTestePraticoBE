@@ -5,7 +5,9 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -52,12 +54,12 @@ public class PessoaControllerTest extends ConfigurationsTest{
 	public void teste3AtualizarPessoa() {
 		
 		Response response = given().when().get("/pessoas").as(Response.class);
-		PessoaDto pessoaResponse = recuperarDto(response);
+		List<PessoaDto> listaPessoaResponse = recuperarDto(response);
 		
 		Gson gson = new Gson();
 		
 		Pessoa pessoa = new Pessoa();
-		pessoa.setId(pessoaResponse.getId());
+		pessoa.setId(listaPessoaResponse.get(0).getId());
 		pessoa.setNome("Teste");
 		pessoa.setNumeroCpfCnpj("129.051.428-39");
 		pessoa.setTipoPessoa(TipoPessoa.JURIDICA);
@@ -76,21 +78,28 @@ public class PessoaControllerTest extends ConfigurationsTest{
 	public void teste4DeletarPessoa() {
 		
 		Response response = given().when().get("/pessoas").as(Response.class);
-		PessoaDto pessoaResponse = recuperarDto(response);
+		List<PessoaDto> listaPessoaResponse = recuperarDto(response);
 		
 		given()
         .contentType("application/json")
-        .when().delete("/pessoas/"+pessoaResponse.getId()).then()
+        .when().delete("/pessoas/"+listaPessoaResponse.get(0).getId()).then()
         .statusCode(200)
         ;
         
 	}
 	
-	private PessoaDto recuperarDto(Response response) {
+	private List<PessoaDto> recuperarDto(Response response) {
+		List<PessoaDto> lista = new ArrayList<PessoaDto>();
 		Gson gson = new Gson();
-		LinkedHashMap map = (LinkedHashMap)response.getData().get(0);
-        JsonElement jsonElement = gson.toJsonTree(map);
-        return gson.fromJson(jsonElement, PessoaDto.class);
+		
+		for (int i = 0; i < response.getData().size(); i++) {
+			
+			LinkedHashMap map = (LinkedHashMap)response.getData().get(i);
+			JsonElement jsonElement = gson.toJsonTree(map);
+			lista.add(gson.fromJson(jsonElement, PessoaDto.class));
+		}
+		
+        return lista;
 		
 	}
 	

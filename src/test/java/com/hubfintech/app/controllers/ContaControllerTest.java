@@ -6,7 +6,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -63,12 +65,12 @@ public class ContaControllerTest extends ConfigurationsTest{
 	public void teste3AtualizarConta() {
 		
 		Response response = given().when().get("/contas").as(Response.class);
-		ContaDto contaResponse = recuperarDto(response); 
+		List<ContaDto> listaContaResponse = recuperarDto(response); 
 		
 		Gson gson = new Gson();
 		
 		Conta conta = new Conta();
-		conta.setId(contaResponse.getId());
+		conta.setId(listaContaResponse.get(0).getId());
 		conta.setNome("Teste 1");
 		conta.setSaldo(new BigDecimal(1500));
 		conta.setSituacao(SituacaoConta.ATIVA);
@@ -94,21 +96,28 @@ public class ContaControllerTest extends ConfigurationsTest{
 	public void teste4DeletarConta() {
 		
 		Response response = given().when().get("/contas").as(Response.class);
-		ContaDto contaResponse = this.recuperarDto(response); 
+		List<ContaDto> listaContaResponse = this.recuperarDto(response); 
 		
 		given()
         .contentType("application/json")
-        .when().delete("/contas/"+contaResponse.getId()).then()
+        .when().delete("/contas/"+listaContaResponse.get(0).getId()).then()
         .statusCode(200)
         ;
         
 	}
 	
-	private ContaDto recuperarDto(Response response) {
+	private List<ContaDto> recuperarDto(Response response) {
+		List<ContaDto> lista = new ArrayList<ContaDto>();
 		Gson gson = new Gson();
-		LinkedHashMap map = (LinkedHashMap)response.getData().get(0);
-        JsonElement jsonElement = gson.toJsonTree(map);
-        return gson.fromJson(jsonElement, ContaDto.class);
+		
+		for (int i = 0; i < response.getData().size(); i++) {
+			
+			LinkedHashMap map = (LinkedHashMap)response.getData().get(i);
+			JsonElement jsonElement = gson.toJsonTree(map);
+			lista.add(gson.fromJson(jsonElement, ContaDto.class));
+		}
+		
+        return lista;
 		
 	}
 	
