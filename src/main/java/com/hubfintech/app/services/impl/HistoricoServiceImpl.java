@@ -23,10 +23,17 @@ public class HistoricoServiceImpl implements HistoricoService{
 		
 		Historico entity = new Historico();
 		
+		if(historicoDto.getId() != null) {
+			
+			entity = repository.findById(historicoDto.getId()).get();
+			
+		}
+		
 		entity.setValor(historicoDto.getValor());
 		entity.setTipoTransferencia(TipoTransacao.recuperarEnum(historicoDto.getTipoTransferencia()));
 		
 		repository.save(entity);
+		
 		
 		entity.setContaOrigem(historicoDto.getContaOrigem());
 		entity.setContaDestino(historicoDto.getContaDestino());

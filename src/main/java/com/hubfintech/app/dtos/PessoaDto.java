@@ -43,8 +43,6 @@ public class PessoaDto {
 		this.nome = nome;
 	}
 
-	@NotNull(message = "Razao não pode ser vazia.")
-	@Length(min = 5, max = 200, message = "Razao deve conter entre 5 e 200 caracteres.")
 	public String getRazaoSocial() {
 		return razaoSocial;
 	}

@@ -19,18 +19,23 @@ public class PessoaServiceImpl implements PessoaService{
 	private PessoaRepository repository;
 	
 	@Override
-	public void cadastrarOuAtualizar(PessoaDto contaDto) {
-		
+	public Long cadastrarOuAtualizar(PessoaDto pessoaDto) {
 		Pessoa entity = new Pessoa();
 		
-		entity.setNome(contaDto.getNome());
-		entity.setDataNascimento(contaDto.getDataNascimento());
-		entity.setNumeroCpfCnpj(contaDto.getNumeroCpfCnpj());
-		entity.setRazaoSocial(contaDto.getRazaoSocial());
-		entity.setTipoPessoa(TipoPessoa.recuperarEnum(contaDto.getTipoPessoa()));
+		if(pessoaDto.getId() != null) {
+			
+			entity = repository.findById(pessoaDto.getId()).get();
+		}
+		
+		entity.setNome(pessoaDto.getNome());
+		entity.setDataNascimento(pessoaDto.getDataNascimento());
+		entity.setNumeroCpfCnpj(pessoaDto.getNumeroCpfCnpj());
+		entity.setRazaoSocial(pessoaDto.getRazaoSocial());
+		entity.setTipoPessoa(TipoPessoa.recuperarEnum(pessoaDto.getTipoPessoa()));		
 		
 		repository.save(entity);
 		
+		return entity.getId();
 	}
 
 	@Override

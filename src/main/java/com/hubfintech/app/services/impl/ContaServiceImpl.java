@@ -3,19 +3,23 @@ package com.hubfintech.app.services.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hubfintech.app.dtos.ContaDto;
 import com.hubfintech.app.dtos.HistoricoDto;
+import com.hubfintech.app.dtos.PessoaDto;
 import com.hubfintech.app.entities.Conta;
+import com.hubfintech.app.entities.Pessoa;
 import com.hubfintech.app.enums.SituacaoConta;
 import com.hubfintech.app.enums.TipoConta;
 import com.hubfintech.app.enums.TipoTransacao;
 import com.hubfintech.app.exception.RegraNegocioException;
 import com.hubfintech.app.repositories.ContaRepository;
 import com.hubfintech.app.services.ContaService;
+import com.hubfintech.app.utils.Util;
 
 @Service
 public class ContaServiceImpl implements ContaService{
@@ -28,7 +32,12 @@ public class ContaServiceImpl implements ContaService{
 		
 		Conta entity = new Conta();
 		
-		entity.setId(contaDto.getId());
+		if(contaDto.getId() != null) {
+			
+			entity = repository.findById(contaDto.getId()).get();
+			
+		}
+		
 		entity.setNome(contaDto.getNome());
 		entity.setIdPai(contaDto.getIdPai());
 		entity.setSaldo(contaDto.getSaldo());
@@ -46,6 +55,7 @@ public class ContaServiceImpl implements ContaService{
 		
 		for (Conta conta : repository.findAll()) {
 			ContaDto contaDto = new ContaDto(); 
+			PessoaDto pessoaDto = new PessoaDto();
 			
 			contaDto.setId(conta.getId());
 			contaDto.setIdPai(conta.getIdPai());
@@ -56,6 +66,20 @@ public class ContaServiceImpl implements ContaService{
 			contaDto.setDataCriacao(conta.getDataCriacao());
 			contaDto.setContas(conta.getContas());
 			
+			Pessoa pessoa = conta.getPessoa();
+			if(pessoa != null) {
+				
+				pessoaDto.setId(pessoa.getId());
+				pessoaDto.setNome(pessoa.getNome());
+				pessoaDto.setDataNascimento(pessoa.getDataNascimento());
+				pessoaDto.setNumeroCpfCnpj(pessoa.getNumeroCpfCnpj());
+				pessoaDto.setRazaoSocial(pessoa.getRazaoSocial());
+				pessoaDto.setTipoPessoa(pessoa.getTipoPessoa().toString());
+				
+				contaDto.setPessoa(pessoaDto);
+			}
+			
+			
 			listaConta.add(contaDto);
 		}
 		
@@ -65,7 +89,8 @@ public class ContaServiceImpl implements ContaService{
 	@Override
 	public ContaDto consultarPeloId(Long id) {
 		
-		ContaDto contaDto = new ContaDto();
+		ContaDto contaDto = new ContaDto(); 
+		PessoaDto pessoaDto = new PessoaDto();
 		
 		Conta conta = repository.findById(id).get();
 		
@@ -76,6 +101,19 @@ public class ContaServiceImpl implements ContaService{
 		contaDto.setSituacao(conta.getSituacao().name());
 		contaDto.setTipoConta(conta.getTipoConta().name());
 		contaDto.setContas(conta.getContas());
+		
+		Pessoa pessoa = conta.getPessoa();
+		if(pessoa != null) {
+			pessoaDto.setId(pessoa.getId());
+			pessoaDto.setNome(pessoa.getNome());
+			pessoaDto.setDataNascimento(pessoa.getDataNascimento());
+			pessoaDto.setNumeroCpfCnpj(pessoa.getNumeroCpfCnpj());
+			pessoaDto.setRazaoSocial(pessoa.getRazaoSocial());
+			pessoaDto.setTipoPessoa(pessoa.getTipoPessoa().toString());
+			
+			contaDto.setPessoa(pessoaDto);
+		}
+		
 		
 		return contaDto;
 	}
@@ -117,7 +155,7 @@ public class ContaServiceImpl implements ContaService{
 			case TRANFERENCIA:
 				
 				//Subtraindo o valor a ser transferido da Conta de Origem
-				contaOrigem.getSaldo().min(valorTransferencia);
+				contaOrigem.setSaldo(contaOrigem.getSaldo().subtract(valorTransferencia));
 				
 				//Adicionando o valor a ser transferido para a Conta de Destino
 				contaDestino.setSaldo(contaDestino.getSaldo().add(valorTransferencia));
@@ -138,6 +176,33 @@ public class ContaServiceImpl implements ContaService{
 		Conta contaOrigem = historicoDto.getContaOrigem();
 		Conta contaDestino = historicoDto.getContaDestino();
 		
+		if(contaOrigem != null) {
+			
+			Optional<Conta> contaOpt = repository.findById(contaOrigem.getId());
+			
+			if(contaOpt.isPresent()) {
+				contaOrigem = contaOpt.get();
+			}else {
+				throw new RegraNegocioException("Conta de Origem não é uma conta valida");
+			}
+			
+			
+		}
+		
+		if(contaDestino != null) {
+			
+			Optional<Conta> contaOpt = repository.findById(contaDestino.getId());
+			
+			if(contaOpt.isPresent()) {
+				contaDestino = contaOpt.get();
+			}else {
+				throw new RegraNegocioException("Conta de Destino não é uma conta valida");
+			}
+			
+			
+		}
+		
+		
 		switch (TipoTransacao.recuperarEnum(historicoDto.getTipoTransferencia())) {
 		
 			case APORTE:
@@ -154,6 +219,10 @@ public class ContaServiceImpl implements ContaService{
 					throw new RegraNegocioException("Conta de Origem não pode ser vazia");
 				}
 				
+				if(contaOrigem.getPessoa() == null) {
+					throw new RegraNegocioException("Pessoa da Conta de Origem não pode ser vazia");
+				}
+				
 				if(contaDestino.getTipoConta() == TipoConta.MATRIZ) {
 					throw new RegraNegocioException("Não é permitido realizar transferencia para Conta Matriz");
 				}
@@ -167,6 +236,35 @@ public class ContaServiceImpl implements ContaService{
 					throw new RegraNegocioException("Não é permitido realizar transferencia devido a conta de origem estar Bloqueada e/ou Cancelada");
 				}
 				
+				if(contaOrigem.getPessoa() == null ||
+						contaDestino.getPessoa() == null) {
+					throw new RegraNegocioException("Pessoa da Conta de Origem/Destino não pode ser vazia");
+				}
+				
+				switch (contaOrigem.getPessoa().getTipoPessoa()) {
+				
+					case JURIDICA:
+						
+						if(!Util.validarCnpj(contaOrigem.getPessoa().getNumeroCpfCnpj())) {
+							throw new RegraNegocioException("CNPJ da Pessoa da Conta Origem se encontra invalido");
+						}
+						
+						break;
+					
+					case FISICA:
+						
+						if(!Util.validarCpf(contaOrigem.getPessoa().getNumeroCpfCnpj())) {
+							throw new RegraNegocioException("CPF da Pessoa da Conta Origem se encontra invalido");
+						}
+						
+						break;
+					
+					case TIPO_PESSOA_INVALIDO:
+					default:
+						throw new RegraNegocioException("Tipo da Pessoa da Conta Origem invalido");
+				
+				}
+				
 				break;
 			
 			case TRANSACAO_INVALIDA:
@@ -175,10 +273,38 @@ public class ContaServiceImpl implements ContaService{
 			
 		}
 		
+		if(contaDestino.getPessoa() == null) {
+			throw new RegraNegocioException("Pessoa da Conta de Origem não pode ser vazia");
+		}
+		
 		if(contaDestino.getSituacao() == SituacaoConta.BLOQUEADA || 
 				contaDestino.getSituacao() == SituacaoConta.CANCELADA) {
 			throw new RegraNegocioException("Não é permitido realizar transferencia devido a conta de destino estar Bloqueada e/ou Cancelada");
 		}
+		
+		switch (contaDestino.getPessoa().getTipoPessoa()) {
+		
+		case JURIDICA:
+			
+			if(!Util.validarCnpj(contaDestino.getPessoa().getNumeroCpfCnpj())) {
+				throw new RegraNegocioException("CNPJ da Pessoa da Conta Origem se encontra invalido");
+			}
+			
+			break;
+		
+		case FISICA:
+			
+			if(!Util.validarCpf(contaDestino.getPessoa().getNumeroCpfCnpj())) {
+				throw new RegraNegocioException("CPF da Pessoa da Conta Destino se encontra invalido");
+			}
+			
+			break;
+		
+		case TIPO_PESSOA_INVALIDO:
+		default:
+			throw new RegraNegocioException("Tipo da Pessoa da Conta Origem invalido");
+	
+	}
 		
 	}
 	
@@ -228,7 +354,7 @@ public class ContaServiceImpl implements ContaService{
 			case APORTE:
 				
 				//Adicionando o valor a ser transferido para a Conta de Destino
-				contaDestino.setSaldo(contaDestino.getSaldo().min(valorTransferencia));
+				contaDestino.setSaldo(contaDestino.getSaldo().subtract(valorTransferencia));
 				
 				repository.save(contaDestino);
 				
@@ -237,10 +363,10 @@ public class ContaServiceImpl implements ContaService{
 			case TRANFERENCIA:
 				
 				//Subtraindo o valor a ser transferido da Conta de Origem
-				contaOrigem.getSaldo().add(valorTransferencia);
+				contaOrigem.setSaldo(contaOrigem.getSaldo().add(valorTransferencia));
 				
 				//Adicionando o valor a ser transferido para a Conta de Destino
-				contaDestino.setSaldo(contaDestino.getSaldo().min(valorTransferencia));
+				contaDestino.setSaldo(contaDestino.getSaldo().subtract(valorTransferencia));
 				
 				repository.save(contaOrigem);
 				repository.save(contaDestino);

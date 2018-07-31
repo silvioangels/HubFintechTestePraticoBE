@@ -23,6 +23,24 @@ public class ContaDto {
 	private String situacao;
 	private List<Conta> contas;
 	private PessoaDto pessoa;
+	
+	public ContaDto() {
+		super();
+	}
+
+	public ContaDto(Long id, String nome, int idPai, String tipoConta, Date dataCriacao, BigDecimal saldo,
+			String situacao, List<Conta> contas, PessoaDto pessoa) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.idPai = idPai;
+		this.tipoConta = tipoConta;
+		this.dataCriacao = dataCriacao;
+		this.saldo = saldo;
+		this.situacao = situacao;
+		this.contas = contas;
+		this.pessoa = pessoa;
+	}
 
 	public Long getId() {
 		return id;

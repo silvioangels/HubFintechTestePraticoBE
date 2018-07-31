@@ -2,7 +2,7 @@ package com.hubfintech.app.enums;
 
 public enum TipoPessoa {
 
-	FISICA, JURIDICA;
+	TIPO_PESSOA_INVALIDO, FISICA, JURIDICA;
 
 	public static TipoPessoa recuperarEnum(String codigo) {
 
@@ -14,7 +14,7 @@ public enum TipoPessoa {
 
 		}
 
-		throw new IllegalArgumentException("Valor do codigo não valido");
+		return TIPO_PESSOA_INVALIDO;
 	}
 
 }

@@ -128,8 +128,6 @@ public class ContaController {
 		
 	}
 	
-	
-	
 	@CrossOrigin
 	@DeleteMapping(value = "{id}")
 	public ResponseEntity<Response<String>> deletar(@PathVariable("id") Long id) {
@@ -179,7 +177,7 @@ public class ContaController {
 		} catch (RegraNegocioException e) {
 			response.getErrors().add("Regra de Negocio: " +e.getMessage());
 			return ResponseEntity.badRequest().body(response);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			response.getErrors().add(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
 		}
@@ -190,15 +188,15 @@ public class ContaController {
 	
 	@CrossOrigin
 	@DeleteMapping("/transferencia/{id}")
-	public ResponseEntity<Response<String>> realizarEstorno(@PathVariable("id") Long id) {
+	public ResponseEntity<Response<HistoricoDto>> realizarEstorno(@PathVariable("id") Long id) {
 		
-		Response<String> response = new Response<String>();
+		Response<HistoricoDto> response = new Response<HistoricoDto>();
 		
 		try {
 			
 			HistoricoDto historicoDto = historicoService.consultarPeloId(id);
-			
 			contaService.realizarEstorno(historicoDto);
+			response.setData(Arrays.asList(historicoService.consultarPeloId(id)));
 			
 		} catch (DataIntegrityViolationException e) {
 			response.getErrors().add("Não é possivel apagar o registro filho.");

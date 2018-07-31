@@ -1,31 +1,12 @@
 package com.hubfintech.app;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import com.hubfintech.app.entities.Conta;
-import com.hubfintech.app.entities.Historico;
-import com.hubfintech.app.entities.Pessoa;
-import com.hubfintech.app.enums.SituacaoConta;
-import com.hubfintech.app.enums.TipoConta;
-import com.hubfintech.app.enums.TipoPessoa;
-import com.hubfintech.app.enums.TipoTransacao;
-import com.hubfintech.app.repositories.ContaRepository;
-import com.hubfintech.app.repositories.HistoricoRepository;
-import com.hubfintech.app.repositories.PessoaRepository;
 
 @SpringBootApplication
 public class App {
 	
-	@Autowired
+	/*@Autowired
 	private ContaRepository contaRepository;
 	
 	@Autowired
@@ -33,12 +14,12 @@ public class App {
 	
 	@Autowired
 	private HistoricoRepository historicoRepository;
-	
+	*/
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
 	}
 	
-	@Bean
+	/*@Bean
 	public CommandLineRunner commandLineRunner() {
 		return args -> {
 			System.out.println("###############################################################");
@@ -77,10 +58,17 @@ public class App {
 			
 			Pessoa pessoa = new Pessoa();
 			pessoa.setNome("Teste");
-			pessoa.setNumeroCpfCnpj("12905142839");
+			pessoa.setNumeroCpfCnpj("129.051.428-39");
 			pessoa.setDataNascimento(new Date());
 			pessoa.setTipoPessoa(TipoPessoa.FISICA);
 			conta.setPessoa(pessoa);
+			
+			Pessoa pessoa2 = new Pessoa();
+			pessoa2.setNome("Pessoa 2");
+			pessoa2.setNumeroCpfCnpj("129.051.428-39");
+			pessoa2.setDataNascimento(new Date());
+			pessoa2.setTipoPessoa(TipoPessoa.FISICA);
+			conta5.setPessoa(pessoa2);
 			
 			List<Conta> listaConta = new ArrayList<Conta>();
 			List<Conta> listaConta2 = new ArrayList<Conta>();
@@ -106,7 +94,15 @@ public class App {
 			conta6.setNome("Teste 6");
 			conta6.setSaldo(new BigDecimal(1000));
 			conta6.setSituacao(SituacaoConta.ATIVA);
-			conta6.setTipoConta(TipoConta.MATRIZ);
+			conta6.setTipoConta(TipoConta.FILIAL);
+			conta6.setIdPai(6);
+			
+			Pessoa pessoa3 = new Pessoa();
+			pessoa3.setNome("Pessoa 2");
+			pessoa3.setNumeroCpfCnpj("129.051.428-39");
+			pessoa3.setDataNascimento(new Date());
+			pessoa3.setTipoPessoa(TipoPessoa.FISICA);
+			conta6.setPessoa(pessoa3);
 			
 			Historico historico = new Historico();
 			historico.setContaDestino(conta6);
@@ -122,5 +118,5 @@ public class App {
 			System.out.println("###############################################################");
 			
 		};
-	}
+	}*/
 }
